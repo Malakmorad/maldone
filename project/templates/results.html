@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتائج الطالب - نظام التقييم الرقمي</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #4a6bff, #6a11cb);
+            color: white;
+            padding: 35px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .result-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .result-card:nth-child(1) {
+            border-color: #4a6bff;
+        }
+        
+        .result-card:nth-child(2) {
+            border-color: #ff6b6b;
+        }
+        
+        .result-card:nth-child(3) {
+            border-color: #6bcf7f;
+        }
+        
+        .result-card:nth-child(4) {
+            border-color: #ffc107;
+        }
+        
+        .result-card:nth-child(5) {
+            border-color: #9c27b0;
+        }
+        
+        .result-card:nth-child(6) {
+            border-color: #17a2b8;
+        }
+        
+        .result-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #444;
+            display: flex;
+            align-items: center;
+        }
+        
+        .result-card h3 i {
+            margin-left: 10px;
+            font-size: 1.6rem;
+        }
+        
+        .score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .result-card:nth-child(1) .score {
+            color: #4a6bff;
+        }
+        
+        .result-card:nth-child(2) .score {
+            color: #ff6b6b;
+        }
+        
+        .result-card:nth-child(3) .score {
+            color: #6bcf7f;
+        }
+        
+        .result-card:nth-child(4) .score {
+            color: #ffc107;
+        }
+        
+        .result-card:nth-child(5) .score {
+            color: #9c27b0;
+        }
+        
+        .result-card:nth-child(6) .score {
+            color: #17a2b8;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1.5s ease-in-out;
+        }
+        
+        .result-card p {
+            color: #666;
+            font-size: 0.95rem;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #4a6bff, #6a11cb);
+            color: white;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(74, 107, 255, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(74, 107, 255, 0.6);
+        }
+        
+        .performance-summary {
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .performance-summary h2 {
+            color: #4a6bff;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .stat {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            min-width: 180px;
+            text-align: center;
+        }
+        
+        .stat h3 {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .stat .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4a6bff;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-chart-line"></i> نتائج الطالب</h1>
+            <p>عرض درجاتك في مواد التعليم الرقمي</p>
+        </div>
+        
+        <div class="content">
+            <div class="performance-summary">
+                <h2><i class="fas fa-tachometer-alt"></i> ملخص الأداء</h2>
+                <div class="stats">
+                    <div class="stat">
+                        <h3>المعدل العام</h3>
+                        <div class="value">86%</div>
+                    </div>
+                    <div class="stat">
+                        <h3>أعلى درجة</h3>
+                        <div class="value">94%</div>
+                    </div>
+                    <div class="stat">
+                        <h3>أدنى درجة</h3>
+                        <div class="value">78%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <h3><i class="fas fa-laptop-code"></i> برمجة وتطوير الويب</h3>
+                    <div class="score">94%</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 94%; background-color: #4a6bff;"></div>
+                    </div>
+                    <p>مستوى متقدم جداً</p>
+                </div>
+                
+                <div class="result-card">
+                    <h3><i class="fas fa-paint-brush"></i> تصميم واجهات المستخدم</h3>
+                    <div class="score">88%</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 88%; background-color: #ff6b6b;"></div>
+                    </div>
+                    <p>مستوى متقدم</p>
+                </div>
+                
+                <div class="result-card">
+                    <h3><i class="fas fa-database"></i> قواعد البيانات</h3>
+                    <div class="score">82%</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 82%; background-color: #6bcf7f;"></div>
+                    </div>
+                    <p>مستوى جيد جداً</p>
+                </div>
+                
+                <div class="result-card">
+                    <h3><i class="fas fa-mobile-alt"></i> تطبيقات الجوال</h3>
+                    <div class="score">78%</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 78%; background-color: #ffc107;"></div>
+                    </div>
+                    <p>مستوى جيد</p>
+                </div>
+                
+                <div class="result-card">
+                    <h3><i class="fas fa-shield-alt"></i> الأمن السيبراني</h3>
+                    <div class="score">91%</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 91%; background-color: #9c27b0;"></div>
+                    </div>
+                    <p>مستوى متقدم</p>
+                </div>
+                
+                <div class="result-card">
+                    <h3><i class="fas fa-cloud"></i> الحوسبة السحابية</h3>
+                    <div class="score">85%</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 85%; background-color: #17a2b8;"></div>
+                    </div>
+                    <p>مستوى متقدم</p>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <a href="/" class="btn"><i class="fas fa-home"></i> العودة للصفحة الرئيسية</a>
+                <a href="#" class="btn" style="background: linear-gradient(45deg, #6bcf7f, #28a745);"><i class="fas fa-download"></i> تحميل النتائج</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple animation for progress bars
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBars = document.querySelectorAll('.progress');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
