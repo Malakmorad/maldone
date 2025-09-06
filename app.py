@@ -269,8 +269,8 @@ def login_route():
             users = {}
             
             # Add specific admins
-            users['naglaa saed'] = {'password': 'admin123', 'role': 'admin'}
-            users['heba heseen'] = {'password': 'admin456', 'role': 'admin'}
+            users['naglaa saeed '] = {'password': 'admin123', 'role': 'admin'}
+            users['heba hussien'] = {'password': 'admin456', 'role': 'admin'}
             
             # Add regular users (user1, user2, user3, etc.)
             for i in range(1, 99):
