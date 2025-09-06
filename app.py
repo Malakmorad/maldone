@@ -269,7 +269,7 @@ def login_route():
             users = {}
             
             # Add specific admins
-            users['naglaa saeed '] = {'password': 'admin123', 'role': 'admin'}
+            users['naglaa saeed'] = {'password': 'admin123', 'role': 'admin'}
             users['heba hussien'] = {'password': 'admin456', 'role': 'admin'}
             
             # Add regular users (user1, user2, user3, etc.)
