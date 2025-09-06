@@ -183,7 +183,7 @@ def populate_scores():
 
 # تسجيل الدخول وربطه بالواجهة الأمامية
 def login(user_name):
-    if user_name.lower() in ["naglaa saed", "heba heseen"]:
+    if user_name.lower() in ["naglaa saeed ", "heba hussien "]:
         return "dashboard.html"  # رابط صفحة الادمن
 
     # التأكد من وجود الطالب
